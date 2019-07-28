@@ -1,0 +1,38 @@
+* {
+    font-family: "Spoqa Han Sans", sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+nav.gnb ul.menu {
+	list-style-type: none;
+    margin: 0;
+}
+
+nav.gnb ul.menu li {
+	display: inline-block;
+    padding: .25rem 1rem;
+    line-height: 33px;
+}
+
+nav.gnb ul.menu li a {
+	color: black;
+	text-decoration: none;
+	transition: 0.2s all ease;
+}
+
+nav.gnb ul.menu li a:hover {
+	font-weight: 400;
+	color: red;	
+}
+
+
+footer p {
+    margin: 0;
+}
+
+footer.footer {
+    background: #f4f4f4;
+}

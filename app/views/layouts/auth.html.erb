@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>P:Recipe</title>
+  <%= stylesheet_link_tag 'auth', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-light bg-faded">
+      <a class="navbar-brand" href="#">
+        <%= image_tag "precipe.png", height: "30px" %>
+      </a>
+    </nav>
+
+    <main class="d-flex align-items-stretch">
+        <div class="container">
+            <%= yield %>
+        </div>
+    </main>
+    
+    <footer class="footer text-muted py-4">
+      <div class="container">
+        <div class="nav-logo">
+          <%= image_tag "precipe.png", height: "50px" %>
+        </div>
+        <hr>
+        <p>Project developed by J.W.Jeon, M.J.Na in the Paran Semester, Ajou University.</p>
+      </div>
+    </footer>
+
+</body>
+</html>

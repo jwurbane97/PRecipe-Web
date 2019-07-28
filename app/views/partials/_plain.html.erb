@@ -1,0 +1,37 @@
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right mt-4">
+    
+      <div class="col-sm-12 col-md-3 sidebar-offanvas mb-4" id="sidebar">
+        <div class="list-group">
+          <a href="<%= request.path %>" class="list-group-item active">Dashboard</a>
+          <a href="<%= edit_user_registration_path %>" class="list-group-item">Reset Password</a>
+        </div>
+      </div><!--/span-->
+    
+    
+      <div class="col-sm-12 col-md-9">
+        <div class="jumbotron">
+          <h1>Dashboard</h1>
+          <p>You can confirm how much you learn about programming concepts, and also can review the specific level of programming concepts.</p>
+        </div>
+        <div class="row">
+          
+          <% @level.each do |level| %>
+          <div class="col-12 col-lg-4">
+            <h2>Level <%= level.id %></h2>
+            <p><%= level.content %></p>
+            <p>
+              <% if current_user.level > level.id %>
+                <a class="btn btn-secondary" href="<%= level_path(level.id) %>/review" role="button">Review Again »</a>
+              <% else %>
+                <strong>You didn't finished this chapter yet.</strong>
+              <% end %>
+            </p>
+          </div><!--/span-->
+          <% end %>
+          
+        </div><!--/row-->
+      </div><!--/span-->
+    </div><!--/row-->
+</div>

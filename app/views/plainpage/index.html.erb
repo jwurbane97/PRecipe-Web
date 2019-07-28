@@ -1,0 +1,341 @@
+
+<div class="preloader">
+  <h1>LOADING</h1>
+</div>
+
+<div class="message">
+  <% if params[:id].to_i == 1 && current_user.level == 1 then %>
+  <div class="first card">
+    <h1 class="title">Welcome!</h1>
+    <h2 class="subtitle">We'll guide you to the wonderful programming world!</h2>
+    <p class="desc">You have to use blocks to make a complete programmed code.<br>It sounds very awful. But don't worry. That'll be easy for you to study programming language.<br>We'll help you how to make the well-programmed code.</p>
+    <button class="btn ghostBtn is-rounded" id="confirmClose">I got it!</button>
+  </div>
+  <% end %>
+  
+  <div class="target card">
+    <h2><%= @level.title %></h2>
+    <h3><%= @level.content %></h3>
+    <button class="btn ghostBtn is-rounded" id="confirmFeedback">OK</button>
+  </div>
+
+  <div class="positive feedback card">
+    <h2>성공!</h2>
+    <h3><%= @level.positive %></h3>
+    <button class="btn ghostBtn is-rounded" id="confirmResult">OK</button>
+    <input type="hidden" value="positive" id="feedback_result"></input>
+  </div>
+  
+  <div class="negative feedback card">
+    <h2>실패!</h2>
+    <h3><%= @level.negative %></h3>
+    <button class="btn ghostBtn is-rounded" id="confirmTryAgain">Try Again</button>
+    <input type="hidden" value="negative" id="feedback_result"></input>
+  </div>
+  
+</div>
+
+<div class="container">
+  <div class="left-container">
+    <div class="layer layer-50" id="workspace">
+    </div>
+    <div class="instruction">
+        <h2><%= @level.title %></h2>
+        <h3><%= @level.content %></h3>
+    </div>
+  </div>
+  <div class="layer layer-50" id="converted">
+    <nav class="gnb">
+        <ul class="menu">
+          <li><%= link_to "Dashboard", dashboard_path %></li>
+          <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+        </ul>
+        <span class="nav-logo">P:Recipe</span>
+    </nav>
+    <div id="wrap">
+      <section class="section contents-preview">
+        <header>Your code blocks will be:</header>
+        <div class="preview">
+          <canvas id='resultCanvas'></canvas>
+        </div>
+        <button class="btn" id="play">Play the code!</button>
+      </section>
+      <section class="section code-preview">
+        <header>Your code blocks will be converted to: </header>
+        <div class="preview">
+          <pre id="console">
+            <code>
+            </code>
+          </pre>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<xml id="toolbox">
+  <category name="Literal">
+    <!--<block type="text"></block>-->
+    <block type="math_number"></block>
+    <block type="lists_create_empty"></block>
+    <block type="lists_create_with"></block>
+    <block type="logic_null"></block>
+  </category>
+  <category name="Variables" custom="VARIABLE"></category>
+  <category name="Operators">
+    <block type="logic_compare"></block>
+    <block type="logic_operation"></block>
+    <block type="logic_negate"></block>
+    <block type="logic_boolean"></block>
+    <block type="math_arithmetic"></block>
+  </category>
+  
+  <category name="If">
+    <block type="controls_if"></block>
+    <block type="controls_if">
+      <mutation else="1"></mutation>
+    </block>
+    <block type="controls_if">
+      <mutation elseif="1" else="1"></mutation>
+    </block>
+  </category>
+  <category name="Loops">
+    <block type="controls_repeat_ext">
+      <value name="TIMES">
+        <block type="math_number">
+          <field name="NUM">10</field>
+        </block>
+      </value>
+    </block>
+    <block type="controls_whileUntil"></block>
+    <block type="controls_for">
+      <field name="VAR">i</field>
+      <value name="FROM">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <value name="TO">
+        <block type="math_number">
+          <field name="NUM">10</field>
+        </block>
+      </value>
+      <value name="BY">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+    </block>
+    <block type="controls_forEach"></block>
+    <block type="controls_flow_statements"></block>
+  </category>
+  <category name="Lists">
+    <block type="lists_create_empty"></block>
+    <block type="lists_create_with"></block>
+    <block type="lists_repeat">
+      <value name="NUM">
+        <block type="math_number">
+          <field name="NUM">5</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_length"></block>
+    <block type="lists_isEmpty"></block>
+    <block type="lists_indexOf"></block>
+    <block type="lists_getIndex"></block>
+    <block type="lists_setIndex"></block>
+  </category>
+  <category name="Functions" custom="PROCEDURE"></category>
+  <sep></sep>
+  <category name="Library" expanded="true">
+    <category name="반죽 붓기" >
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">틀이 비어있지 않아요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">틀에 반죽을 부어요</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="앙금 넣기" >
+      <block type="text" collapsed="true">
+        <field name="TEXT">redbean</field>
+      </block>
+      <block type="text" collapsed="true">
+        <field name="TEXT">cream</field>
+      </block>
+      <!--<block type="redbean">-->
+      <!--</block>-->
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">redbean 앙금을 넣어요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">cream 앙금을 넣어요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">넣을 앙금이 없어요</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="뒤집기" >
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">틀을 뒤집어요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">이미 틀이 뒤집어있어요</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="꺼내기" >
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">빵을 꺼내요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">틀이 비어있어요</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="상태 확인하기" >
+      <block type="text" collapsed="true">
+        <field name="TEXT">ripe</field>
+      </block>
+      <block type="text" collapsed="true">
+        <field name="TEXT">burnt</field>
+      </block>
+      <block type="text" collapsed="true">
+        <field name="TEXT">raw</field>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">빵이 잘 익었어요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">빵이 탔어요</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <block type="text" collapsed="true">
+            <field name="TEXT">빵이 덜 익었어요</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="FishBread">
+      <!--<block type="text_print">
+        <value name="TEXT"></value>
+      </block>--->
+      <block type="waiting_fishbread">
+      </block>
+      <block type="pour_fishbread">
+      </block>
+      <block type="pour_add_fishbread">
+      </block>
+      <block type="add_fishbread">
+      </block>
+      <block type="open_fishbread">
+      </block>
+      <block type="close_fishbread">
+      </block>
+      <block type="rotate_right_fishbread">
+      </block>
+      <block type="rotate_left_fishbread">
+      </block>
+      <block type="complete_fishbread">
+      </block>
+      <block type="burnt_fishbread">
+      </block>
+      <block type="less_ripe_fishbread">
+      </block>
+      <block type="add_blueberry_fishbread">
+      </block>
+      <block type="add_greentea_fishbread">
+      </block>
+      <block type="add_strawberry_fishbread">
+      </block>
+      <block type="repour_fishbread">
+      </block>
+      <block type="repour_strawberry_fishbread">
+      </block>
+      <block type="repour_blueberry_fishbread">
+      </block>
+      <block type="repour_greentea_fishbread">
+      </block>
+      <block type="reclose_fishbread">
+      </block>
+    </category>
+    <category name="Math">
+    <block type="math_single"></block>
+    <block type="math_trig"></block>
+    <block type="math_constant"></block>
+    <block type="math_number_property"></block>
+    <block type="math_round"></block>
+    <block type="math_on_list"></block>
+    <block type="math_modulo"></block>
+    <block type="math_constrain">
+      <value name="LOW">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <value name="HIGH">
+        <block type="math_number">
+          <field name="NUM">100</field>
+        </block>
+      </value>
+    </block>
+    <block type="math_random_int">
+      <value name="FROM">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <value name="TO">
+        <block type="math_number">
+          <field name="NUM">100</field>
+        </block>
+      </value>
+    </block>
+    <block type="math_random_float"></block>
+  </category>
+  </category>
+</xml>
+
+   

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P:Recipe</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="//cdn.rawgit.com/filipelinhares/ress/master/dist/ress.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
+</head>
+<body>
+
+    <%= yield %>
+    
+    <script src="//code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.js"></script>
+    <script src="//code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+    <script src="/javascripts/blockly_compressed.js"></script>
+    <script src="/javascripts/newblocks_compressed.js"></script>
+    <script src="/javascripts/newjavascript_compressed.js"></script>
+    <script src="/javascripts/newpython_compressed.js"></script>
+    <script src="/javascripts/msg/js/py.js"></script>
+    <script>
+      var workspace = Blockly.inject('workspace',  {media: "/media/", toolbox: document.getElementById('toolbox'),  grid: { spacing: 20, length: 3, colour: '#ccc', snap: true}, trashcan: true});
+      var pos_msg = '<%= @level.positive %>';
+      var neg_msg = '<%= @level.negative %>';
+      var user_level = '<%= current_user.level %>';
+      
+      var var_name;
+      var ingredient;
+      var isEmpty;
+      var isTurnOver;
+      var state;
+      var text;
+      var if_var;
+      var if_state;
+      var else_state;
+      var final;
+      var isSucceed = false;
+      var ingredient_compare = [];
+      var conditions = [];
+      var answer = [];
+      var text = [];
+      var statement = [];
+      var print_messages = [];
+      var if_condition = [];
+      
+      function initalize() {
+        var_name ="";
+        if_var = "";
+        if_state = "";
+        else_state = "";
+        isEmpty = "";
+        isTurnOver = "";
+        final = "";
+        ingredient = "";
+        ingredient_compare = [];
+        conditions = [];
+        text = [];
+        statement = [];
+        print_messages = [];
+        if_condition = [];
+        answer = [];
+        state = "";
+      }
+      
+      function runCode() {
+        // Generate Python code and run it.
+        
+        window.LoopTrap = 1000;
+        Blockly.Python.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+        var py_code = Blockly.Python.workspaceToCode(workspace);
+        Blockly.Python.INFINITE_LOOP_TRAP = null;
+        
+        //init result
+       
+        
+        //var code = Blockly.JavaScript.workspaceToCode(workspace);
+        // Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        
+        try {
+         // eval(code);
+          var result = evaluate(py_code);
+          return result;
+        } catch (e) {
+          alert(e);
+        }
+      }
+      function evaluate(py_code) {
+        var result =  {code: py_code, isSucceed: false};
+        
+        // level1
+        // validation: isEmpty 사용, if문 사용, if_var에 isEmpty 사용, isEmpty true -> 반죽붓기 출력
+        if(user_level == 1){
+          answer = ['pour'];
+          isEmpty = parse(isEmpty);
+          // isEmpty boolean 확인
+          if(isEmpty == "False" || isEmpty == "True") {
+            // isEmpty, operator 사용 확인
+            if_var = if_condition[0].if_var;
+            if(checkHasIsEmpty(if_var)) {
+            
+            // if 조건부분 확인
+            if_var = if_var.split(' ');
+            changeNameToValue(if_var);
+            var op = if_var[1];
+            var if_isTrue = evaluateOperation(op);
+            
+            if(if_isTrue) {
+             var if_statement = parse(if_condition[0].if_statement);
+             final = if_statement;
+             alert(final);
+             if(var_name == "isEmpty" && isEmpty == "True" && if_statement == "틀에 반죽을 부어요") {
+                result.isSucceed = true;
+                result.answer = answer;
+             }else{
+                result.error = "variable and print result doesn't match";
+             }
+           }else if('else_statement' in if_condition[0]) {
+                final =  if_condition[0].else_statement;
+                final = parse(final);
+                alert(final);
+                var else_statement = parse(if_condition[0].else_statement);
+                if(var_name == "isEmpty" && isEmpty == "True" && else_statement == "틀에 반죽을 부어요") {
+                    result.isSucceed = true;
+                    result.answer = answer;
+                 }else{
+                    result.error = "variable and print result doesn't match";
+                 }
+            }
+              
+          }else {
+            result.error = "if condition error";
+          }
+        }else {
+           result.error = "variable type error";
+        }
+         
+          // level2
+          // validation: ingredient 변수사용, operation 사용, compare에 ingredient 사용, redbean, cream 사용, ingredient 값에 해당하는 앙금 출력
+        }else if(user_level == 2) {
+          // ingredient 값 확인
+          ingredient = parse(ingredient);
+          if(ingredient == "redbean" || ingredient == "cream"){
+
+          // ingredient, operator 사용 확인
+          if_var = if_condition[0].if_var;
+          if(checkHasIngredient(if_var)) {
+            
+            // if 조건부분 확인
+            if_var = if_var.split(' ');
+            changeNameToValue(if_var);
+            var op = if_var[1];
+            var if_isTrue = evaluateOperation(op);
+            
+            if(if_isTrue) {
+             var if_statement = if_condition[0].if_statement;
+             if(if_statement.includes(ingredient)){
+               answer = ["add_" + ingredient];
+               //isSucceed = true;
+               //init(answer);
+               alert(parse(if_statement));
+               result.isSucceed = true;
+               result.answer = answer;
+             }else {
+               result.error = "variable and print result doesn't match";
+             }
+            }else {
+              //elif 확인
+              if('elif_var' in if_condition[0]){
+                if_var = if_condition[0].elif_var;
+                if(checkHasIngredient(if_condition[0].if_var)) {
+                  // if 조건부분 확인
+                  if_var = if_var.split(' ');
+                  changeNameToValue(if_var);
+                  var op = if_var[1];
+                  var elif_isTrue = evaluateOperation(op);
+                
+                  if(elif_isTrue) {
+                    var elif_statement = parse(if_condition[0].elif_statement);
+                   
+                    // print 값과 state 값이 일치할때 answer로 보내기 -> 둘다 출력하면? 망... 
+                    if(checkIngredient(elif_statement)){
+                     answer = ["add_"+ingredient];
+                     //isSucceed = true;
+                     //init(answer);
+                     alert(parse(elif_statement));
+                     result.isSucceed = true;
+                     result.answer = answer;
+                    }else {
+                     result.error = "variable and print result doesn't match";
+                    }
+                    }else {
+                      result.error = "elif condition is false";
+                    }  
+                  }else {
+                     result.error = "ingredient, operator error";
+                  }
+                } //elif end
+                //else가 있으며 elif가 성공하지 않았을때
+                if('else_statement' in if_condition[0] && answer.length == 0) {
+                  var else_statement = parse(if_condition[0].else_statement);
+                  alert(else_statement);
+                  if(checkIngredient(else_statement)) {
+                    answer = ["add_"+ingredient];
+                    //isSucceed = true;
+                    //init(answer);
+                    result.isSucceed = true;
+                    result.answer = answer;
+                  }else {
+                    result.error = "variable and print result doesn't match";
+                  }
+                } //else end
+              }  
+          }else {
+            result.error = "ingrdient, operator error";
+          }
+          }else {
+             result.error = "variable error";
+          }
+          
+        
+        // validation: isTurnOver 사용, if문 사용, if_var에 isTurnOver 사용, isEmpty true -> 뒤집기 출력
+        }else if(user_level == 3) {
+          answer = ['turnover'];
+           isTurnOver = parse(isTurnOver);
+          // isTurnOver boolean 확인
+          if(isTurnOver == "False" || isTurnOver == "True") {
+            // isTurnOver, operator 사용 확인
+            if_var = if_condition[0].if_var;
+            if(checkHasIsTurnOver(if_var)) {
+            
+            // if 조건부분 확인
+            if_var = if_var.split(' ');
+            changeNameToValue(if_var);
+            var op = if_var[1];
+            var if_isTrue = evaluateOperation(op);
+            
+            if(if_isTrue) {
+             var if_statement = parse(if_condition[0].if_statement);
+             final = if_statement;
+             alert(final);
+             if(var_name == "isTurnOver" && isTurnOver == "False" && if_statement == "틀을 뒤집어요") {
+                result.isSucceed = true;
+                result.answer = answer;
+             }else{
+                result.error = "variable and print result doesn't match";
+             }
+           }else if('else_statement' in if_condition[0]) {
+                final =  if_condition[0].else_statement;
+                final = parse(final);
+                alert(final);
+                var else_statement = parse(if_condition[0].else_statement);
+                if(var_name == "isTurnOver" && isTurnOver == "False" && else_statement == "틀을 뒤집어요") {
+                    result.isSucceed = true;
+                    result.answer = answer;
+                 }else{
+                    result.error = "variable and print result doesn't match";
+                 }
+            }
+          }else {
+            result.error = "variable type error";
+          }
+        }
+        } //level3 end
+        
+        else if(user_level == 4) {
+          answer = ['open'];
+          isEmpty = parse(isEmpty);
+          // isEmpty boolean 확인
+          if(isEmpty == "False" || isEmpty == "True") {
+            // isEmpty, operator 사용 확인
+            if_var = if_condition[0].if_var;
+            if(checkHasIsEmpty(if_var)) {
+            
+            // if 조건부분 확인
+            if_var = if_var.split(' ');
+            changeNameToValue(if_var);
+            var op = if_var[1];
+            var if_isTrue = evaluateOperation(op);
+            if(if_isTrue) {
+             var if_statement = parse(if_condition[0].if_statement);
+             final = if_statement;
+             alert(final);
+             if(var_name == "isEmpty" && isEmpty == "False" && if_statement == "빵을 꺼내요") {
+                result.isSucceed = true;
+                result.answer = answer;
+                
+             }else{
+                console.log("variable and print result doesn't match");
+             }
+           }else if('else_statement' in if_condition[0]) {
+                final =  if_condition[0].else_statement;
+                final = parse(final);
+                alert(final);
+                var else_statement = parse(if_condition[0].else_statement);
+                if(var_name == "isEmpty" && isEmpty == "False" && else_statement == "빵을 꺼내요") {
+                    result.isSucceed = true;
+                    result.answer = answer;
+                 }else{
+                    result.error = "variable and print result doesn't match";
+                 }
+            }else {
+              result.error = "if condtion doesn't match";
+            }
+          }else {
+            result.error = "variable type error";
+          }
+        }
+          
+        } //level 4 end
+        //level 5
+        else {
+          state = parse(state);
+          if(state == "raw" || state == "ripe" || state == "burnt"){
+          // state, operator 사용 확인
+          if_var = if_condition[0].if_var;
+          if(checkHasResult(if_var)) {
+            // if 조건부분 확인
+            if_var = if_var.split(' ');
+            changeNameToValue(if_var);
+            var op = if_var[1];
+            var if_isTrue = evaluateOperation(op);
+            
+            if(if_isTrue) {
+             var if_statement = parse(if_condition[0].if_statement);
+             
+             // print 값과 state 값이 일치할때 answer로 보내기 -> 둘다 출력하면? 망... 
+             if(checkState(if_statement)){
+               answer = [state];
+               //isSucceed = true;
+              // init(answer);
+               result.isSucceed = true;
+               result.answer = answer;
+               alert(parse(if_statement));
+             }else {
+               result.error = "variable and print result doesn't match";
+             }
+            }else {
+              //elif 확인
+              if('elif_var' in if_condition[0]){
+                if_var = if_condition[0].elif_var;
+                if(checkHasResult(if_var)) {
+                  // if 조건부분 확인
+                  if_var = if_var.split(' ');
+                  changeNameToValue(if_var);
+                  var op = if_var[1];
+                  var elif_isTrue = evaluateOperation(op);
+                
+                  if(elif_isTrue) {
+                    var elif_statement = parse(if_condition[0].elif_statement);
+                   
+                    // print 값과 state 값이 일치할때 answer로 보내기 -> 둘다 출력하면? 망... 
+                    if(checkState(elif_statement)){
+                     answer = [state];
+                     //isSucceed = true;
+                     //init(answer);
+                     result.isSucceed = true;
+                     result.answer = answer;
+                     alert(parse(elif_statement));
+                    }else {
+                     result.error = "variable and print result doesn't match";
+                    }
+                    }else {
+                      console.log("elif condition is false");
+                    
+                    }  
+                  }else {
+                    result.error = "state, operator error";
+                  }
+                } //elif end
+                //else가 있으며 elif가 성공하지 않았을때
+                if('else_statement' in if_condition[0] && answer.length == 0) {
+                  console.log("only if and else or elif failed");
+                  var else_statement = parse(if_condition[0].else_statement);
+                  alert(else_statement);
+                  if(checkState(else_statement)) {
+                    answer = [state];
+                    //isSucceed = true;
+                    //init(answer);
+                    result.isSucceed = true;
+                    result.answer = answer;
+                  }else {
+                    result.error = "variable and print result doesn't match";
+                  }
+                } //else end
+              }// if false end
+          }else {
+            result.error = "state, operator error";
+          }
+        }else {
+          result.error = "variable error";
+        }
+      }//leve5 end
+      return result;
+    } //evaluate() end
+       
+      function parse(str) {
+        return str.replace(/[()']|(print)|^\s+|\s+$/gi,'');
+      }
+      
+      //변경?
+      function changeNameToValue(array) {
+        for(i=0; i<array.length; i++){
+          if(array[i] == "state") {
+            array[i] = state;
+          }
+          if(array[i] == "ingredient") {
+            array[i] = ingredient;
+          }
+          if(array[i] == "isEmpty") {
+            array[i] = isEmpty;
+          }
+          if(array[i] == "isTurnOver") {
+            array[i] = isTurnOver;
+          }
+          array[i] = parse(array[i]);
+        }
+          if_var = array;
+          console.log(if_var);
+      }
+      
+      function evaluateOperation(op) {
+        if(op == "==") {
+          return if_var[0] == if_var[2];
+        }
+        if(op == "!=") {
+          return if_var[0] != if_var[2];
+        }
+      }
+      //checkparameter
+      function checkHasResult(if_var) {
+        return (if_var.includes("!=") || if_var.includes("==")) && if_var.includes("state") && (if_var.includes("ripe") || if_var.includes("burnt") || if_var.includes("raw"));
+      }
+      //check parameter
+      function checkHasIsEmpty(if_var) {
+        return (if_var.includes("!=") || if_var.includes("==") && if_var.includes("isEmpty") && (if_var.includes("True") || if_var.includes("False")));
+      }
+      //checkparameter
+      function checkHasIngredient(if_var) {
+        return (if_var.includes("!=") || if_var.includes("==")) && if_var.includes("ingredient") && (if_var.includes("cream") || if_var.includes("redbean"));
+      }
+      function checkHasIsTurnOver(if_Var) {
+        return (if_var.includes("!=") || if_var.includes("==")) && if_var.includes("isTurnOver") && (if_var.includes("True") || if_var.includes("False"));
+      }
+      //check statement
+      function checkState(str) {
+        if(state == "ripe" && str == "빵이 잘 익었어요") return true;
+        if(state == "burnt" && str == "빵이 탔어요") return true;
+        if(state == "raw" && str == "빵이 덜 익었어요") return true;
+        else return false;
+      }
+      //check statement
+      function checkIngredient(str) {
+        if(ingredient == "cream" && str == "cream 앙금을 넣어요") return true;
+        if(ingredient == "redbean" && str == "redbean 앙금을 넣어요") return true;
+        else return false;
+      }
+    </script>
+    
+    <%= javascript_include_tag 'precipe_main' %>
+    <%= javascript_include_tag 'animations' %>
+    <%= javascript_include_tag 'logic' %>
+    <%= javascript_include_tag 'variables' %>
+    <%= javascript_include_tag 'text'%>
+    
+</body>
+</html>

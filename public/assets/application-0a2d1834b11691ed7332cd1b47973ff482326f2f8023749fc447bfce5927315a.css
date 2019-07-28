@@ -1,0 +1,380 @@
+* {
+    font-family: "Spoqa Han Sans", sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+nav.gnb ul.menu {
+	list-style-type: none;
+    margin: 0;
+}
+
+nav.gnb ul.menu li {
+	display: inline-block;
+    padding: .25rem 1rem;
+    line-height: 33px;
+}
+
+nav.gnb ul.menu li a {
+	color: black;
+	text-decoration: none;
+	transition: 0.2s all ease;
+}
+
+nav.gnb ul.menu li a:hover {
+	font-weight: 400;
+	color: red;	
+}
+
+
+footer p {
+    margin: 0;
+}
+
+footer.footer {
+    background: #f4f4f4;
+}
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
+* {
+	font-family: 'Spoqa Han Sans', sans-serif;
+}
+
+html {
+	font-size: 16px;
+	font-weight: 200;
+}
+
+body {
+	position: relative;
+	margin: 0 auto !important;
+	width: 100vw;
+	min-width: 1440px;
+	max-height: 100vh;
+	overflow-x: scroll;
+	overflow-y: scroll;
+}
+
+/* preloader */
+body.loaded > div.preloader {
+	display: none;
+}
+
+div.preloader {
+	background: rgb(231, 20, 34);
+	color: white;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1500;
+}
+
+.preloader > h1 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 3rem;
+	margin: 0;
+}
+
+/* Tutorial Message */
+.message {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 62vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.7);
+	z-index: 1000;
+}
+
+.card {
+	background: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 16px;
+	text-align: center;
+	width: 50vw;
+	padding: 2rem 5rem;
+	box-shadow: 0 6px 6px -6px #777;
+}
+
+h1.title {
+	font-size: 3rem;
+	font-weight: 100;
+	margin-bottom: 1rem;
+}
+
+h2.subtitle {
+	font-size: 2rem;
+	font-weight: 400;
+}
+
+p.desc {
+	margin: 1rem 0;
+}
+
+/* instruction */
+.instruction {
+	text-align: center;
+    background: white;
+    padding: 2rem 5rem;
+    width: 60vw;
+	min-width: 900px;
+	box-shadow: 0 6px 6px -6px #777;
+	border-radius: 10px;
+	margin-left: 5px;
+	border: 1px solid grey;
+	position: absolute;
+	bottom: 0;
+	z-index: 999;
+}
+
+div.instruction h3 {
+	font-weight: 100;
+}
+
+
+/* target */
+div.target, div.feedback {
+	display: none;
+	position: absolute;
+    z-index: 1001;
+    left: 50%;
+    bottom: 100px;
+}
+
+div.target.on, div.feedback.on {
+	display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+div.target h3 {
+	font-weight: 100;
+}
+
+div.container {
+	display: flex;
+	position: relative;
+}
+
+[class*="layer-"] {
+	display: inline-block;
+	height: 100vh;
+}
+
+
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+	color: black;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover >  .blocklyTreeIcon {
+	filter: invert(0);
+}
+
+.blocklyToolboxDiv {
+	width: 180px;
+	background: #444 !important;
+	color: white;
+	box-shadow:         3px 3px 5px 2px #ccc;
+}
+
+.blocklyTreeRow {
+	  height: 30px;
+    line-height: 30px;
+}
+
+.blocklyTreeIcon {
+	filter: invert(1);
+}
+
+#workspace {
+		width: 60vw;
+		min-width: 900px;
+		height: 75vh;
+}
+
+#converted {
+	  width: 40vw;
+		min-width: 540px;
+		overflow-x: scroll;
+}
+
+xml {
+		display: none;
+}
+
+/* Right layer - preview */
+div#converted > div#wrap {
+	height: calc(100vh - 55px);
+	overflow-y: scroll;
+}
+
+div#converted > nav.gnb {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		background-color: #f4f4f4;
+		padding: 14px;
+}
+
+nav.gnb ul.menu {
+	list-style-type: none;
+}
+
+nav.gnb ul.menu li {
+	display: inline-block;
+	padding: 0 1rem;
+	line-height: 55px;
+}
+
+nav.gnb ul.menu li a {
+	color: black;
+	text-decoration: none;
+	transition: 0.2s all ease;
+}
+
+nav.gnb ul.menu li a:hover {
+	font-weight: 400;
+	color: red;	
+}
+
+div#converted > nav.gnb > span.nav-logo {
+		text-indent: -999px;
+		background: url('precipe.png');
+		width: 216px;
+		height: 55px;
+		background-size: 216px;
+}
+
+div.preview {
+		min-height: 400px;
+		height: 50vh;
+		border: 1px dashed grey;
+		margin: 10px;
+}
+
+.code-preview .preview {
+	background: black;
+}
+
+section > header {
+		padding:14px;
+}
+
+/* Button Components */
+button.btn {
+		margin-left: 14px;
+		padding: 5px 10px;
+		border: 2px solid #0066ff;
+		color: #0066ff !important;
+		font-weight: 400;
+		font-size: 14px;
+		display: inline-block;
+		background: #fff;
+		transition: color 0.5s ease, background 0.5s ease;
+}
+
+button.btn:hover {
+		cursor: pointer;
+		background: #0066ff;
+		color: white !important;
+}
+
+button.ghostBtn {
+	margin-top: 0.5rem;
+	padding: 1rem 4rem;
+}
+
+button.is-rounded {
+	border-radius: 3rem;
+}
+
+code {
+	font-family: monospace;
+	color: white;
+}
+
+/* Flash */
+
+[class*="flash-"] {
+		position: absolute;
+		display: inline-block;
+		text-align: center;
+		width: 300px;
+		height: auto;
+		background-color: #06f;
+		color: white;
+		bottom: 10px;
+		right: 10px;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* Canvas */
+canvas {
+		-webkit-user-drag: none;
+		user-select: none;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		width: 100%;
+		height: 100%;
+}
+
+/* Code*/
+.hljs {
+	background: black !important;
+	color: white !important;
+	padding: 1rem;
+}
+
+[class*='hljs-'] {
+	font-family: monospace !important;
+}
+
+.hljs-keyword {
+	color: #c26230 !important;
+}
+
+.hljs-function {
+	color: #e6e1dc !important;
+}
+
+.hljs-string {
+	color: #a5c261 !important;
+}
+
+.hljs-comment {
+	font-style: italic !important;
+	color: #bc9458 !important;
+}
+
+.hljs-params {
+	color: green !important;
+}
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+
+
+ */
+
