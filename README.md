@@ -9,3 +9,5 @@
 **아주대학교 파란학기 프로젝트**로 개발되었으며, Ruby on Rails를 활용합니다.
 
 프로젝트 진행기간 : 2017. 03 ~ 2017. 06
+
+![Page Screenhsot](./app/assets/images/page_screenshot.png)
